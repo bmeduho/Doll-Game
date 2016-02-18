@@ -123,26 +123,41 @@ function setupScene() {
 	for (var i = 0; i < mapW; i++) {
 		for (var j = 0; j < map[i].length; j++) {
 			for (var k = 0; k < map[i][j].length; k++) {
-				var wall = new THREE.Mesh(cube, materials[map[i][j]-1]);
-				wall.position.x = (i - units/2) * UNITSIZE;
-				wall.position.y = WALLHEIGHT/2;
-				wall.position.z = (j - units/2) * UNITSIZE;
-				scene.add(wall);
 				switch (map[i][j][k]) {
 					case 1:
-						
+						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
+						wall.position.x = (i - unitsL/2) * UNITSIZE;
+						wall.position.y = (k - unitsH/2) * UNITSIZE;
+						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						scene.add(wall);
 						break;
 					case 2:
-						
+						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
+						wall.position.x = (i - unitsL/2) * UNITSIZE;
+						wall.position.y = (k - unitsH/2) * UNITSIZE;
+						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						scene.add(wall);
 						break;
 					case 3:
-						
+						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
+						wall.position.x = (i - unitsL/2) * UNITSIZE;
+						wall.position.y = (k - unitsH/2) * UNITSIZE;
+						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						scene.add(wall);
 						break;
 					case 6:
-						
+						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
+						wall.position.x = (i - unitsL/2) * UNITSIZE;
+						wall.position.y = (k - unitsH/2) * UNITSIZE;
+						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						scene.add(wall);
 						break;
 					case 7:
-						
+						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
+						wall.position.x = (i - unitsL/2) * UNITSIZE;
+						wall.position.y = (k - unitsH/2) * UNITSIZE;
+						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						scene.add(wall);
 						break;
 					case 0:
 						
@@ -150,12 +165,6 @@ function setupScene() {
 					default:
 						
 						break;
-				}
-					var wall = new t.Mesh(cube, materials[map[i][j]-1]);
-					wall.position.x = (i - units/2) * UNITSIZE;
-					wall.position.y = WALLHEIGHT/2;
-					wall.position.z = (j - units/2) * UNITSIZE;
-					scene.add(wall);
 				}
 			}
 		}
