@@ -83,14 +83,93 @@ function init() {
 	
 	document.addEventListener( 'keydown', onKeyDown, false );
 	document.addEventListener( 'keyup', onKeyUp, false );
-	// floor
+	
+	setupScene();
+	
+	//
+	renderer = new THREE.WebGLRenderer();
+	renderer.setClearColor( 0xffffff );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+	//
+	window.addEventListener( 'resize', onWindowResize, false );
+}
+function setupScene() {
+	var unitsL = Levels.Practice.Map.length;
+	var unitsW = Levels.Practice.Map[0].length;
+	var unitsH = Levels.Practice.Map[0][0].length;
+	
+	// Geometry: floor
+	var floor = new THREE.Mesh(
+			new THREE.CubeGeometry(unitsL * 20, 10, unitsW * 20),
+			new t.MeshLambertMaterial({color: 0xEDCBA0})
+	);
+	scene.add(floor);
+	
+	// Geometry: walls
+	var cube = new THREE.CubeGeometry(20, 20, 20);
+	var materials = [
+	                 new THREE.MeshLambertMaterial({color: 0x000000}),
+	                 new THREE.MeshLambertMaterial({color: 0xFF0000}),
+	                 new THREE.MeshLambertMaterial({color: 0x00FF00}),
+	                 new THREE.MeshLambertMaterial({color: 0x0000FF}),
+	                 new THREE.MeshLambertMaterial({color: 0xFFFFFF}),
+	                 new THREE.MeshLambertMaterial({color: 0xF00000}),
+	                 new THREE.MeshLambertMaterial({color: 0x00F000}),
+	                 new THREE.MeshLambertMaterial({color: 0x0000F0}),
+	                 new THREE.MeshLambertMaterial({color: 0xF0F0F0})
+	                 ];
+	for (var i = 0; i < mapW; i++) {
+		for (var j = 0; j < map[i].length; j++) {
+			for (var k = 0; k < map[i][j].length; k++) {
+				var wall = new THREE.Mesh(cube, materials[map[i][j]-1]);
+				wall.position.x = (i - units/2) * UNITSIZE;
+				wall.position.y = WALLHEIGHT/2;
+				wall.position.z = (j - units/2) * UNITSIZE;
+				scene.add(wall);
+				switch (map[i][j][k]) {
+					case 1:
+						
+						break;
+					case 2:
+						
+						break;
+					case 3:
+						
+						break;
+					case 6:
+						
+						break;
+					case 7:
+						
+						break;
+					case 0:
+						
+						break;
+					default:
+						
+						break;
+				}
+					var wall = new t.Mesh(cube, materials[map[i][j]-1]);
+					wall.position.x = (i - units/2) * UNITSIZE;
+					wall.position.y = WALLHEIGHT/2;
+					wall.position.z = (j - units/2) * UNITSIZE;
+					scene.add(wall);
+				}
+			}
+		}
+	}
+	
+	
+/*	// floor
 	geometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
 	/*for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
 		var vertex = geometry.vertices[ i ];
 		vertex.x += Math.random() * 20 - 10;
 		vertex.y += Math.random() * 2;
 		vertex.z += Math.random() * 20 - 10;
-	s}*/
+	s}*
 	for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
 		var face = geometry.faces[ i ];
 		face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
@@ -157,7 +236,7 @@ function init() {
 		scene.add( mesh );
 		material.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 		objects.push( mesh );
-	}*/
+	}*
 	// SkySphere
 	geometry = new THREE.SphereGeometry(400,16,16);
 	for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
@@ -191,14 +270,7 @@ function init() {
 	hitBox2 = new THREE.Mesh(geometry,material);
 	hitBox2.position = player.position;
 	scene.add(hitBox2);
-	//
-	renderer = new THREE.WebGLRenderer();
-	renderer.setClearColor( 0xffffff );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
-	//
-	window.addEventListener( 'resize', onWindowResize, false );
+*/
 }
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
