@@ -4,7 +4,6 @@ var camera, scene, renderer;
 var geometry, material, mesh;
 var objects = [];
 var collision = false;
-var level = Prototype;
 var controlsEnabled = true;
 var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
 var prevTime = performance.now();
@@ -102,10 +101,11 @@ function setupScene() {
 	
 	// Geometry: floor
 	var floor = new THREE.Mesh(
-			new THREE.CubeGeometry(unitsL * 20, 10, unitsW * 20),
-			new t.MeshLambertMaterial({color: 0xEDCBA0})
+			new THREE.CubeGeometry(unitsL * 20, 20, unitsW * 20),
+			new THREE.MeshLambertMaterial({color: 0xEDCBA0})
 	);
 	scene.add(floor);
+	floor.position.y -= 20;
 	
 	// Geometry: walls
 	var cube = new THREE.CubeGeometry(20, 20, 20);
@@ -120,19 +120,19 @@ function setupScene() {
 	                 new THREE.MeshLambertMaterial({color: 0xFF00FF}),
 	                 new THREE.MeshLambertMaterial({color: 0xF0F0F0})
 	                 ];
-	for (var i = 0; i < mapW; i++) {
-		for (var j = 0; j < map[i].length; j++) {
-			for (var k = 0; k < map[i][j].length; k++) {
-				switch (map[i][j][k]) {
+	for (var i = 0; i < Levels.Practice.Map.length; i++) {
+		for (var j = 0; j < Levels.Practice.Map[i].length; j++) {
+			for (var k = 0; k < Levels.Practice.Map[i][j].length; k++) {
+				switch (Levels.Practice.Map[i][j][k]) {
 					case 1:
 					case 2:
 					case 3:
 					case 6:
 					case 7:
-						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
-						wall.position.x = (i - unitsL/2) * UNITSIZE;
-						wall.position.y = (k - unitsH/2) * UNITSIZE;
-						wall.position.z = (j - unitsW/2) * UNITSIZE;
+						var wall = new THREE.Mesh(cube, materials[Levels.Practice.Map[i][j][k]-1]);
+						wall.position.x = (i - 4.5) * 20;
+						wall.position.y = (k) * 20;
+						wall.position.z = (j - 4.5) * 20;
 						scene.add(wall);
 						break;
 					case 0:
@@ -370,9 +370,9 @@ var PmodelYmax = (player.position.y + 10);
 	player.translateX( velocity.x * delta );
 	player.translateY( velocity.y * delta );
 	player.translateZ( velocity.z * delta );
-	if ( player.position.y < 10 ) {
+	if ( player.position.y < 0 ) {
 		velocity.y = 0;
-		player.position.y = 10;
+		player.position.y = 0;
 		canJump = true;
 	}
 
