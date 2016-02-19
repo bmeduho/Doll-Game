@@ -115,9 +115,9 @@ function setupScene() {
 	                 new THREE.MeshLambertMaterial({color: 0x00FF00}),
 	                 new THREE.MeshLambertMaterial({color: 0x0000FF}),
 	                 new THREE.MeshLambertMaterial({color: 0xFFFFFF}),
-	                 new THREE.MeshLambertMaterial({color: 0xF00000}),
-	                 new THREE.MeshLambertMaterial({color: 0x00F000}),
-	                 new THREE.MeshLambertMaterial({color: 0x0000F0}),
+	                 new THREE.MeshLambertMaterial({color: 0xFFFF00}),
+	                 new THREE.MeshLambertMaterial({color: 0x00FFFF}),
+	                 new THREE.MeshLambertMaterial({color: 0xFF00FF}),
 	                 new THREE.MeshLambertMaterial({color: 0xF0F0F0})
 	                 ];
 	for (var i = 0; i < mapW; i++) {
@@ -125,33 +125,9 @@ function setupScene() {
 			for (var k = 0; k < map[i][j].length; k++) {
 				switch (map[i][j][k]) {
 					case 1:
-						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
-						wall.position.x = (i - unitsL/2) * UNITSIZE;
-						wall.position.y = (k - unitsH/2) * UNITSIZE;
-						wall.position.z = (j - unitsW/2) * UNITSIZE;
-						scene.add(wall);
-						break;
 					case 2:
-						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
-						wall.position.x = (i - unitsL/2) * UNITSIZE;
-						wall.position.y = (k - unitsH/2) * UNITSIZE;
-						wall.position.z = (j - unitsW/2) * UNITSIZE;
-						scene.add(wall);
-						break;
 					case 3:
-						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
-						wall.position.x = (i - unitsL/2) * UNITSIZE;
-						wall.position.y = (k - unitsH/2) * UNITSIZE;
-						wall.position.z = (j - unitsW/2) * UNITSIZE;
-						scene.add(wall);
-						break;
 					case 6:
-						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
-						wall.position.x = (i - unitsL/2) * UNITSIZE;
-						wall.position.y = (k - unitsH/2) * UNITSIZE;
-						wall.position.z = (j - unitsW/2) * UNITSIZE;
-						scene.add(wall);
-						break;
 					case 7:
 						var wall = new THREE.Mesh(cube, materials[map[i][j][k]-1]);
 						wall.position.x = (i - unitsL/2) * UNITSIZE;
@@ -245,7 +221,7 @@ function setupScene() {
 		scene.add( mesh );
 		material.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 		objects.push( mesh );
-	}*
+	}*/
 	// SkySphere
 	geometry = new THREE.SphereGeometry(400,16,16);
 	for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
@@ -270,6 +246,7 @@ function setupScene() {
 	material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 	player = new THREE.Mesh( geometry, material );
 	scene.add( player );
+	/*
 	// Hit Boxes
 	geometry = new THREE.BoxGeometry(20,20,5);
 	material = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.FrontSide});
@@ -333,7 +310,7 @@ function animate() {
 		if(objects[i].objectType = "Cube") {
 			collision = intersect(player,objects[i]);
 		} 
-	}*/
+	}*
 var Pmodel = (player.position.x || player.position.x + 10|| player.position.x - 10);	
 var PmodelXmin = (player.position.x - 10);	
 var PmodelXmax = (player.position.x + 10);	
@@ -366,7 +343,7 @@ var PmodelYmax = (player.position.y + 10);
 	var delta = ( time - prevTime ) / 1000;
 	velocity.x -= velocity.x * 10.0 * delta;
 	velocity.z -= velocity.z * 10.0 * delta;
-	if(PCollision === 0){velocity.y -= 9.8 * 100.0 * delta;}; // 100.0 = mass
+	velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 	if (moveForward) velocity.z -= 400.0 * delta;
 	if ( moveBackward ) velocity.z += 900.0 * delta;
 	if ( moveLeft ) player.rotation.y += 2.0 * delta;
@@ -374,16 +351,16 @@ var PmodelYmax = (player.position.y + 10);
 	/*if ( isOnObject === true ) {
 		velocity.y = Math.max( 0, velocity.y );
 		canJump = true;
-	}*/
+	}*
 	for (var i = 0; i < objects.length; i++) {
 		if (objects[i].objectType === "Button") {
 			/*if (((player.position.x + 10 || player.position.x || player.position.x - 10) <= buttonMesh[i].position.x + 2.5 && (player.position.x + 10 || player.position.x - 10) >= buttonMesh[i].position.x- 2.5) && ((player.position.y + 10 ||player.position.y ||  player.position.y - 10) <= buttonMesh[i].position.y + 2.5 && (player.position.y + 10 || player.position.y - 10) >= buttonMesh[i].position.y- 2.5) && ((player.position.z + 10 ||player.position.z ||  player.position.z - 10) <= buttonMesh[i].position.z + 2.5 && (player.position.z + 10 || player.position.z - 10) >= buttonMesh[i].position.z - 2.5) && buttonMesh[i].visible === true) {
 				console.log("Working");
 				buttonMesh[i].visible = false;
-			}*/
+			}*
 			objects[i].rotation.y += 5.0 * delta;
 		}
-	}
+	}*/
 	
 	
 	
@@ -406,7 +383,7 @@ var PmodelYmax = (player.position.y + 10);
 	camera.position.z = cameraOffset.z;
 	camera.lookAt( player.position );
 	
-	
+/*
 	var relativeHitBox1Offset = new THREE.Vector3(0,0,10);
 	var HitBox1Offset = relativeHitBox1Offset.applyMatrix4( player.matrixWorld );
 	hitBox1.position.x = HitBox1Offset.x;
@@ -420,7 +397,7 @@ var PmodelYmax = (player.position.y + 10);
 	hitBox2.position.y = player.position.y;
 	hitBox2.position.z = HitBox2Offset.z;
 	hitBox2.lookAt( player.position );
-
+*/
 	prevTime = time;
 
 	renderer.render( scene, camera );
