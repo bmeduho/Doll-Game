@@ -10,6 +10,8 @@ var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var block;
 var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
+var exit = true;
+var wall;
 
 /* END GLOBAL VARIABLES */
 
@@ -40,6 +42,10 @@ var onKeyDown = function ( event ) {
 		case 32: // space
 			if ( canJump === true ) velocity.y += 350;
 			canJump = false;
+			break;
+		case 27: // Esc
+			exit = false;
+			return exit;
 			break;
 	}
 };
@@ -135,7 +141,7 @@ function setupScene() {
 					case 7:
 					case 8:
 					case 9:
-						var wall = new THREE.Mesh(cube, materials[Levels.Practice.Map[i][j][k]-1]);
+						wall = new THREE.Mesh(cube, materials[Levels.Practice.Map[i][j][k]-1]);
 						wall.position.x = (i - 4.5) * 20;
 						wall.position.y = (k - 1) * 20;
 						wall.position.z = (j - 4.5) * 20;
@@ -149,10 +155,13 @@ function setupScene() {
 						break;
 				}
 				blockPositions.push(wall);
+				console.log("BlockPushed!");
 			}
 			blockPositionsL2.push(blockPositions);
+			blockPositions.splice(0,4);
 		}
 		blockPositionsL3.push(blockPositionsL2);
+		blockPositionsL2.splice(0,19);
 	}
 	
 	
@@ -255,6 +264,7 @@ function setupScene() {
 	material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 	player = new THREE.Mesh( geometry, material );
 	scene.add( player );
+	player.position.set(100,50,100);
 	/*
 	// Hit Boxes
 	geometry = new THREE.BoxGeometry(20,20,5);
@@ -312,7 +322,23 @@ function checkZ (pPosZ, iPosZ, width) {
 		return false;
 	}
 }*/
+function intersectSphBox(sphere, box) {
+  // get box closest point to sphere center by clamping
+  var x = Math.max(box.position.x - 10, Math.min(sphere.position.x - 10, box.position.x + 10));
+  var y = Math.max(box.position.y - 10, Math.min(sphere.position.y - 10, box.position.y + 10));
+  var z = Math.max(box.position.z - 10, Math.min(sphere.position.z - 10, box.position.z + 10));
+
+  // this is the same as isPointInsideSphere
+  var distance = Math.sqrt((x - sphere.position.x) * (x - sphere.position.x) +
+                           (y - sphere.position.y) * (y - sphere.position.y) +
+                           (z - sphere.position.z) * (z - sphere.position.z));
+  
+  return distance < sphere.radius;
+}
 function animate() {
+	if (!exit) {
+		return;
+	}
 	requestAnimationFrame( animate );
 	
 /*	for (var i = 0; i < objects.length; i++) {
@@ -377,7 +403,9 @@ var PmodelYmax = (player.position.y + 10);
 				block = Levels.Practice.Map[i][j][k];
 				switch (block) {
 					case 1:
-						if (player.position.x + 10 > block.position.)
+						if (intersectSphBox(player,blockPositionsL3[i][j][k])) {
+							console.log("Yes?");
+						}
 						break;
 					case 2:
 					case 3:
@@ -398,7 +426,7 @@ var PmodelYmax = (player.position.y + 10);
 				}
 			}
 		}
-	
+	}
 	
 	
 	
