@@ -12,6 +12,7 @@ var block;
 var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
+var canJump = true;
 var unitsL = Levels.Practice.Map.length, unitsW = Levels.Practice.Map[0].length, unitsH = Levels.Practice.Map[0][0].length;
 
 /* END GLOBAL VARIABLES */
@@ -41,8 +42,11 @@ var onKeyDown = function ( event ) {
 			moveRight = true;
 			break;
 		case 32: // space
-			if ( canJump === true ) velocity.y += 350;
+			if ( canJump === true ) player.position.y += 20;
 			canJump = false;
+			break;
+		case 17: // ctrl
+			canJump = true;
 			break;
 		case 27: // Esc
 			exit = false;
@@ -262,7 +266,7 @@ function setupScene() {
 	material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 	player = new THREE.Mesh( geometry, material );
 	scene.add( player );
-	player.position.set(100,50,100);
+	player.position.set(200,20,200);
 	/*
 	// Hit Boxes
 	geometry = new THREE.BoxGeometry(20,20,5);
@@ -334,28 +338,63 @@ function intersectSphBox(sphere, box) {
   return distance < sphere.radius;
 }*/
 function getMapSector(v) {
-	var x = Math.floor((v.x + (20 / 2)) / 20 + unitsL/2);
-	var y = Math.floor((v.y + (20 / 2)) / 20 + unitsH/2);
-	var z = Math.floor((v.z + (20 / 2)) / 20 + unitsW/2);
-	console.log("x = " + x + ", y = " + y + ", z = " + z);
+	var x = Math.floor((v.x + (20 / 2)) / 20);
+	var y = Math.floor((v.y + (20 / 2)) / 20);
+	var z = Math.floor((v.z + (20 / 2)) / 20);
 	return {x: x, y: y, z: z};
 }
 function checkWallCollision(v) {
 	var c = getMapSector(v);
-	return Levels.Practice.Map[c.x][c.z][c.y] > 0;
+	return {actual: Levels.Practice.Map[c.x][c.z][c.y], below: Levels.Practice.Map[c.x][c.z][c.y - 1]};
 }
 function update(delta) {
 	var actualMoveSpeed = delta * 50.0;
 	if (moveForward) {
 		player.translateZ( - actualMoveSpeed);
-		if (checkWallCollision(player.position)) {
-			this.object.translateZ( actualMoveSpeed );
+		if (checkWallCollision(player.position).actual === 1) {
+			player.translateZ( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 2) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 2) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 6) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 6) {
+			player.translateY( - actualMoveSpeed );
 		}
 	}
 	if (moveBackward) {
 		player.translateZ( actualMoveSpeed);
-		if (checkWallCollision(player.position)) {
-			this.object.translateZ( - actualMoveSpeed );
+		if (checkWallCollision(player.position).actual === 1) {
+			player.translateZ( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 2) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 2) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 6) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 6) {
+			player.translateY( - actualMoveSpeed );
 		}
 	}
 	if (moveLeft) {
@@ -369,34 +408,6 @@ function update(delta) {
 		/*if (checkWallCollision(player.position)) {
 			this.object.translateZ( - actualMoveSpeed );
 		}*/
-	}
-	for (var i = 0; i < Levels.Practice.Map.length; i++) {
-		for (var j = 0; j < Levels.Practice.Map[i].length; j++) {
-			for (var k = 0; k < Levels.Practice.Map[i][j].length; k++) {
-				block = Levels.Practice.Map[i][j][k];
-				switch (block) {
-					case 1:
-						
-						break;
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-					case 9:
-						
-						break;
-					case 0:
-						
-						break;
-					default:
-						
-						break;
-				}
-			}
-		}
 	}
 }
 function animate() {
