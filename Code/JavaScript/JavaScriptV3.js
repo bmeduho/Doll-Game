@@ -356,10 +356,37 @@ function update(delta) {
 		} else if (checkWallCollision(player.position).actual === 2) {
 			player.translateY( actualMoveSpeed );
 		} else if (checkWallCollision(player.position).below === 2) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 3) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 3) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 4) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 4) {
 			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
 				player.translateY( actualMoveSpeed );
 			}
 			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 5) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 5) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
 				player.translateY( - actualMoveSpeed );
 			}
 		} else if (checkWallCollision(player.position).actual === 6) {
@@ -371,6 +398,33 @@ function update(delta) {
 			}
 		} else if (checkWallCollision(player.position).below === 6) {
 			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 7) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 7) {
+			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 8) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 8) {
+			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 9) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 9) {
+			player.translateY( - actualMoveSpeed );
 		}
 	}
 	if (moveBackward) {
@@ -380,10 +434,37 @@ function update(delta) {
 		} else if (checkWallCollision(player.position).actual === 2) {
 			player.translateY( actualMoveSpeed );
 		} else if (checkWallCollision(player.position).below === 2) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 3) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 3) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 4) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 4) {
 			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
 				player.translateY( actualMoveSpeed );
 			}
 			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).actual === 5) {
+			player.translateY( actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 5) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) > 0) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
 				player.translateY( - actualMoveSpeed );
 			}
 		} else if (checkWallCollision(player.position).actual === 6) {
@@ -394,6 +475,33 @@ function update(delta) {
 				player.translateY( - actualMoveSpeed );
 			}
 		} else if (checkWallCollision(player.position).below === 6) {
+			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 7) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 7) {
+			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 8) {
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.x / 20 - Math.floor(player.position.x / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 8) {
+			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).actual === 9) {
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 1 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) <= 1) {
+				player.translateY( actualMoveSpeed );
+			}
+			if (Math.round(player.position.z / 20 - Math.floor(player.position.z / 20)) === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) < 1) {
+				player.translateY( - actualMoveSpeed );
+			}
+		} else if (checkWallCollision(player.position).below === 9) {
 			player.translateY( - actualMoveSpeed );
 		}
 	}
