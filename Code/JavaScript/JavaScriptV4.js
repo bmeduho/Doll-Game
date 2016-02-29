@@ -469,6 +469,8 @@ function update(delta) {
 			}
 		} else if (checkWallCollision(player.position).below === 9) {
 			player.translateY( - actualMoveSpeed );
+		} else if (checkWallCollision(player.position).below === 1) {
+			player.translateY( + Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) );
 		}
 	}
 	if (moveBackward) {
