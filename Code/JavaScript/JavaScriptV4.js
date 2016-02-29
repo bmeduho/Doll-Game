@@ -1,6 +1,13 @@
-document.body.appendChild('canvas');
-var canvas = document.getElementById("canvas-gameplay");
-var ctx = canvas.getContext("2d");
+var canvas = document.createElement('canvas');
+canvas.id = "ui";
+document.body.appendChild(canvas);
+var gEBI = document.getElementById('ui')
+var gCtx = gEBI.getContext("2d");
+gEBI.style.color = "blue";
+gEBI.width = window.innerWidth;
+gEBI.height = window.innerHeight;
+gEBI.style.position = "absolute";
+gEBI.style.zIndex = "100";
 
 
 /* START GLOBAL VARIABLES */
@@ -22,21 +29,32 @@ var unitsL = Levels.Practice.Map.length, unitsW = Levels.Practice.Map[0].length,
 
 /* END GLOBAL VARIABLES */
 
-var healthReady = false;
-var healthImage = {
+
+var healthReady = 0;
+/*var healthImage = {
 	Full: new Image(),
 	MinOne: new Image(),
 	MinTwo: new Image(),
 	Empty: new Image()
+};*/
+var healthImage = [new Image(), new Image(), new Image(), new Image()];
+healthImage[0].onload = function () {
+	healthReady += 1;
 };
-healthImage.onload = function () {
-	avatarReady = true;
+healthImage[1].onload = function () {
+	healthReady += 1;
 };
-healthImage.Full = "../../Visuals/2D/HealthThree.png";
-healthImage.MinOne = "../../Visuals/2D/HealthTwo.png";
-healthImage.MinTwo = "../../Visuals/2D/HealthOne.png";
-healthImage.Empty = "../../Visuals/2D/HealthEmpty.png";
+healthImage[2].onload = function () {
+	healthReady += 1;
+};
+healthImage[3].onload = function () {
+	healthReady += 1;
+};
 
+healthImage[0].src = "../../Visuals/2D/HealthThree.png";
+healthImage[1].src = "../../Visuals/2D/HealthTwo.png";
+healthImage[2].src = "../../Visuals/2D/HealthOne.png";
+healthImage[3].src = "../../Visuals/2D/HealthEmpty.png";
 
 
 /* START KEYPRESS FUNCTIONS */
@@ -90,6 +108,12 @@ var onKeyUp = function ( event ) {
 		case 39: // right
 		case 68: // d
 			moveRight = false;
+			break;
+		case 13: // enter
+			health -= 1;
+			break;
+		case 16: // shift
+			health += 1;
 			break;
 	}
 };
@@ -301,6 +325,8 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	gEBI.width = window.innerWidth;
+	gEBI.height = window.innerHeight;
 }
 /*function intersect(sphere, box) {
 	// get box closest point to sphere center by clamping
@@ -637,14 +663,22 @@ var PmodelYmax = (player.position.y + 10);
 		canJump = true;
 	}*/
 	
-	camera.clearRect(0, 0, canvas.width, canvas.height);
-	for (var i = 0; i < bullets.length; i++) {
-		if (basicBulletReady) {
-			ctx.drawImage(basicBulletImage, bullets[i][1], bullets[i][2]);
-		};
-	}
-	if (avatarReady) {
-		ctx.drawImage(avatarImage, avatar.x, avatar.y);
+	gCtx.clearRect(0, 0, gEBI.style.width, gEBI.style.height);
+	if (healthReady === 4) {
+		switch(health) {
+			case 0:
+				gCtx.drawImage(healthImage[3], (gEBI.width / 2) - (healthImage[3].width / 2), 10);
+				break;
+			case 1:
+				gCtx.drawImage(healthImage[2], (gEBI.width / 2) - (healthImage[2].width / 2), 10);
+				break;
+			case 2:
+				gCtx.drawImage(healthImage[1], (gEBI.width / 2) - (healthImage[1].width / 2), 10);
+				break;
+			case 3:
+				gCtx.drawImage(healthImage[0], (gEBI.width / 2) - (healthImage[0].width / 2), 10);
+				break;
+		}
 	};
 
 	var relativeCameraOffset = new THREE.Vector3(0,0,40);
