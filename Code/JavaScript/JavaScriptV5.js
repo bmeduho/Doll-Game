@@ -19,13 +19,15 @@ var health = 3;
 //var controlsEnabled = true;
 var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
 var prevTime = performance.now();
-//var velocity = new THREE.Vector3();
+var velocity = new THREE.Vector3();
 var block;
 var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
 var canJump = true;
 var unitsL = Levels.Practice.Map.length, unitsW = Levels.Practice.Map[0].length, unitsH = Levels.Practice.Map[0][0].length;
+var interaction = false;
+var textBox = document.getElementById('textBox');
 
 /* END GLOBAL VARIABLES */
 
@@ -50,7 +52,6 @@ healthImage[2].onload = function () {
 healthImage[3].onload = function () {
 	healthReady += 1;
 };
-
 healthImage[0].src = "../../Visuals/2D/HealthThree.png";
 healthImage[1].src = "../../Visuals/2D/HealthTwo.png";
 healthImage[2].src = "../../Visuals/2D/HealthOne.png";
@@ -78,11 +79,11 @@ var onKeyDown = function ( event ) {
 			moveRight = true;
 			break;
 		case 32: // space
-			if ( canJump === true ) player.position.y += 20;
+			if ( canJump === true ) velocity.y += 350;
 			canJump = false;
 			break;
 		case 17: // ctrl
-			canJump = true;
+			interaction = true;
 			break;
 		case 27: // Esc
 			exit = false;
@@ -137,6 +138,7 @@ function init() {
 	
 	document.addEventListener( 'keydown', onKeyDown, false );
 	document.addEventListener( 'keyup', onKeyUp, false );
+	
 	
 	setupScene();
 	
@@ -199,7 +201,6 @@ function setupScene() {
 						break;
 				}
 				blockPositions.push(wall);
-				console.log("BlockPushed!");
 			}
 			blockPositionsL2.push(blockPositions);
 			blockPositions.splice(0,4);
@@ -381,6 +382,10 @@ function intersectSphBox(sphere, box) {
   
   return distance < sphere.radius;
 }*/
+function type (words) {
+	textBox.innerHTML = words;
+	textBox.style.display = "block";
+}
 function getMapSector(v) {
 	var x = Math.floor((v.x + (20 / 2)) / 20);
 	var y = Math.floor((v.y + (20 / 2)) / 20);
@@ -402,10 +407,16 @@ function movementHandler(delta) {
 	}*/
 	if (checkWallCollision(player.position).below === 0) {
 		player.translateY( - actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) >= 1) {
+	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 1) {
 		player.translateY( actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && player.position.y / 20 - Math.floor(player.position.y / 20) > 0) {
-		player.translateY( - actualMoveSpeed );
+	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 0) {
+		velocity.y = 0;
+		if (player.position.y / 20 - Math.floor(player.position.y / 20) > .10) {
+			player.translateY( - actualMoveSpeed );
+		} else {
+			player.position.y -= player.position.y / 20 - Math.floor(player.position.y / 20);
+			canJump = true;
+		}
 	}
 	if (moveForward) {
 		player.translateZ( - actualMoveSpeed);
@@ -569,6 +580,11 @@ function movementHandler(delta) {
 	if (moveRight) {
 		player.rotation.y -= 2.0 * delta;
 	}
+	
+	player.translateY(velocity.y * delta);
+	if (!canJump) {
+		velocity.y -= 50 * delta;
+	}
 }
 function animate() {
 	if (!exit) {
@@ -676,6 +692,10 @@ var PmodelYmax = (player.position.y + 10);
 		player.position.y = 0;
 		canJump = true;
 	}*/
+	
+	if (interaction === true) {
+		type("Testing... 1... 2... 3...")
+	}
 	
 	gCtx.clearRect(0, 0, gEBI.style.width, gEBI.style.height);
 	if (healthReady === 4) {
