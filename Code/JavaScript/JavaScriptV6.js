@@ -2,7 +2,7 @@
 
 var camera, scene, renderer;
 var geometry, material, mesh;
-var health = 3;
+var health;
 var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -11,7 +11,6 @@ var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
 var canJump = true;
-var unitsL = Levels.Practice.Map.length, unitsW = Levels.Practice.Map[0].length, unitsH = Levels.Practice.Map[0][0].length;
 var interaction = false;
 var textBox = document.getElementById('textBox');
 var practiceLvl = document.getElementById('Practice');
@@ -164,6 +163,8 @@ function setupScene(level) {
 	blocker.style.display = "none";
 	currentLevel = level;
 	blockPositionsL3.splice(0,blockPositionsL3.length);
+	var unitsL = level.Map.length, unitsW = level.Map[0].length, unitsH = level.Map[0][0].length;
+	health = 3;
 	// Geometry: walls
 	var cube = new THREE.CubeGeometry(20, 20, 20);
 	var materials = [
