@@ -1,5 +1,6 @@
 /* START GLOBAL VARIABLES */
 
+var q = 0, sentenceDraw = "";
 var camera, scene, renderer;
 var geometry, material, mesh;
 var health;
@@ -11,11 +12,12 @@ var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
 var canJump = true;
-var interaction = false;
+var interaction = false, interactionRead = false;
 var textBox = document.getElementById('textBox');
 var practiceLvl = document.getElementById('Practice');
 var blocker = document.getElementById('blocker');
 var currentLevel = false;
+var interval;
 
 /* END GLOBAL VARIABLES */
 
@@ -83,6 +85,9 @@ var onKeyDown = function ( event ) {
 			break;
 		case 17: // ctrl
 			interaction = true;
+			break;
+		case 16: // shift
+			interactionRead = true;
 			break;
 		case 27: // Esc
 			exit = false;
@@ -159,7 +164,6 @@ function init() {
 
 
 function setupScene(level) {
-	console.log("setupScene(" + level + "); has run");
 	blocker.style.display = "none";
 	currentLevel = level;
 	blockPositionsL3.splice(0,blockPositionsL3.length);
@@ -388,8 +392,14 @@ function intersectSphBox(sphere, box) {
   return distance < sphere.radius;
 }*/
 function type (words) {
-	textBox.innerHTML = words;
-	textBox.style.display = "block";
+	if (q <= words.length) {
+		var letter = words.substring(q, q + 1);
+		sentenceDraw += letter;
+		textBox.innerHTML = sentenceDraw;
+	} else if (q >= words.length) {
+		clearInterval(interval);
+	}
+	q += 1;
 }
 function getMapSector(v) {
 	var x = Math.floor((v.x + (20 / 2)) / 20);
@@ -593,6 +603,7 @@ function movementHandler(delta) {
 }
 function animate() {
 	if (!exit) {
+		clearInterval(interval);
 		return;
 	}
 	var time = performance.now();
@@ -699,7 +710,14 @@ var PmodelYmax = (player.position.y + 10);
 	}*/
 	
 	if (interaction === true) {
-		type("Testing... 1... 2... 3...")
+		q = 0;
+		var sentenceDraw = "";
+		textBox.style.display = "block";
+		interval = setInterval(type, 300, "Hello world!");
+		interaction = false;
+	}
+	if (interactionRead === true) {
+		textBox.style.display = "none";
 	}
 	
 	gCtx.clearRect(0, 0, gEBI.style.width, gEBI.style.height);
