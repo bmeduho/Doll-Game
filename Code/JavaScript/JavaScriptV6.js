@@ -8,7 +8,7 @@ var moveForward = false, moveBackward = false, moveLeft = false, moveRight = fal
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var block;
-var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
+//var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
 var canJump = true;
@@ -16,6 +16,8 @@ var interaction = false, interactionRead = false;
 var textBox = document.getElementById('textBox');
 var practiceLvl = document.getElementById('Practice');
 var blocker = document.getElementById('blocker');
+var pause = document.getElementById('pauseScreen');
+var levelName = document.getElementById('levelName');
 var currentLevel = false;
 var interval;
 
@@ -86,9 +88,6 @@ var onKeyDown = function ( event ) {
 		case 17: // ctrl
 			interaction = true;
 			break;
-		case 16: // shift
-			interactionRead = true;
-			break;
 		case 27: // Esc
 			exit = false;
 			return exit;
@@ -119,6 +118,10 @@ var onKeyUp = function ( event ) {
 			break;
 		case 16: // shift
 			health += 1;
+			break;
+		case 27: // Esc
+			exit = true;
+			return exit;
 			break;
 	}
 };
@@ -164,38 +167,111 @@ function init() {
 
 
 function setupScene(level) {
+	console.log("seupScene( " + level + " ) has run.");
 	blocker.style.display = "none";
 	currentLevel = level;
-	blockPositionsL3.splice(0,blockPositionsL3.length);
+	//blockPositionsL3.splice(0,blockPositionsL3.length);
 	var unitsL = level.Map.length, unitsW = level.Map[0].length, unitsH = level.Map[0][0].length;
 	health = 3;
+	// Player
+	geometry = new THREE.SphereGeometry(10,16,16);
+	for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
+		var face = geometry.faces[ i ];
+		face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+		face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+		face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+	}
+	material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+	player = new THREE.Mesh( geometry, material );
+	scene.add( player );
+	player.position.set(level.PlayerPosition.x,level.PlayerPosition.y,level.PlayerPosition.z);
 	// Geometry: walls
 	var cube = new THREE.CubeGeometry(20, 20, 20);
-	var materials = [
-	                 new THREE.MeshLambertMaterial({color: 0x000000}),
-	                 new THREE.MeshLambertMaterial({color: 0xFF0000}),
-	                 new THREE.MeshLambertMaterial({color: 0x00FF00}),
-	                 new THREE.MeshLambertMaterial({color: 0x0000FF}),
-	                 new THREE.MeshLambertMaterial({color: 0xFFFFFF}),
-	                 new THREE.MeshLambertMaterial({color: 0xFFFF00}),
-	                 new THREE.MeshLambertMaterial({color: 0x00FFFF}),
-	                 new THREE.MeshLambertMaterial({color: 0xFF00FF}),
-	                 new THREE.MeshLambertMaterial({color: 0xF0F0F0})
-	                 ];
+	var materials;/*[
+		new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load("../../Visuals/1-block-texture-practice.png")}),
+		new THREE.MeshLambertMaterial({color: 0xFF0000}),
+		new THREE.MeshLambertMaterial({color: 0x00FF00}),
+		new THREE.MeshLambertMaterial({color: 0x0000FF}),
+		new THREE.MeshLambertMaterial({color: 0xFFFFFF}),
+		new THREE.MeshLambertMaterial({color: 0xFFFF00}),
+		new THREE.MeshLambertMaterial({color: 0x00FFFF}),
+		new THREE.MeshLambertMaterial({color: 0xFF00FF}),
+		new THREE.MeshLambertMaterial({color: 0xF0F0F0})
+	];*/
+	/*var texture = [
+		new THREE.TextureLoader().load("../../Visuals/1-block-texture-practice.png")
+	];*/
 	for (var i = 0; i < level.Map.length; i++) {
 		for (var j = 0; j < level.Map[i].length; j++) {
 			for (var k = 0; k < level.Map[i][j].length; k++) {
 				switch (level.Map[i][j][k]) {
 					case 1:
+						materials = new THREE.MeshLambertMaterial({color: 0x000000});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 2:
+						materials = new THREE.MeshLambertMaterial({color: 0xFF0000});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 3:
+						materials = new THREE.MeshLambertMaterial({color: 0x00FF00});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 4:
+						materials = new THREE.MeshLambertMaterial({color: 0x0000FF});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 5:
+						materials = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 6:
+						materials = new THREE.MeshLambertMaterial({color: 0xFFFF00});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 7:
+						materials = new THREE.MeshLambertMaterial({color: 0x00FFFF});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 8:
+						materials = new THREE.MeshLambertMaterial({color: 0xFF00FF});
+						wall = new THREE.Mesh(cube, materials);
+						wall.position.x = i * 20;
+						wall.position.y = k * 20;
+						wall.position.z = j * 20;
+						scene.add(wall);
+						break;
 					case 9:
-						wall = new THREE.Mesh(cube, materials[level.Map[i][j][k]-1]);
+						materials = new THREE.MeshLambertMaterial({color: 0xF0F0F0});
+						wall = new THREE.Mesh(cube, materials);
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
@@ -208,13 +284,13 @@ function setupScene(level) {
 						
 						break;
 				}
-				blockPositions.push(wall);
+				//blockPositions.push(wall);
 			}
-			blockPositionsL2.push(blockPositions);
-			blockPositions.splice(0,4);
+			//blockPositionsL2.push(blockPositions);
+			//blockPositions.splice(0,4);
 		}
-		blockPositionsL3.push(blockPositionsL2);
-		blockPositionsL2.splice(0,19);
+		//blockPositionsL3.push(blockPositionsL2);
+		//blockPositionsL2.splice(0,20);
 	}
 	
 	
@@ -306,18 +382,7 @@ function setupScene(level) {
 	mesh = new THREE.Mesh( geometry, material );
 	mesh.rotation.y = -Math.PI / 2;
 	scene.add( mesh );*/
-	// Player
-	geometry = new THREE.SphereGeometry(10,16,16);
-	for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-		var face = geometry.faces[ i ];
-		face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-		face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-		face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-	}
-	material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
-	player = new THREE.Mesh( geometry, material );
-	scene.add( player );
-	player.position.set(level.PlayerPosition.x,level.PlayerPosition.y,level.PlayerPosition.z);
+	
 	/*
 	// Hit Boxes
 	geometry = new THREE.BoxGeometry(20,20,5);
@@ -329,6 +394,16 @@ function setupScene(level) {
 	hitBox2.position = player.position;
 	scene.add(hitBox2);
 */
+	animate();
+}
+function breakScene() {
+	scene.children.splice(2,scene.children.length);
+	currentLevel = false;
+	pauseScreen.style.display = "none";
+	blocker.style.display = "block";
+}
+function rejoinGame() {
+	pauseScreen.style.display = "none";
 	animate();
 }
 function onWindowResize() {
@@ -604,6 +679,8 @@ function movementHandler(delta) {
 function animate() {
 	if (!exit) {
 		clearInterval(interval);
+		levelName.innerHTML = currentLevel.Name;
+		pauseScreen.style.display = "block";
 		return;
 	}
 	var time = performance.now();
