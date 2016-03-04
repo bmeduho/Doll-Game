@@ -1,7 +1,7 @@
 var Levels = {
-
 	Practice: {
-		Map: // Ten types of blocks. Twenty by twenty grid. 1 = Block; 2 = UpTop; 3 = RightTop; 4 = DownTop; 5 = LeftTop; 6 = UpBottom; 7 = RightBottom; 8 = DownBottom; 9 = LeftBottom; 0 = Blank;
+		Name: "Practice",
+		Map: // Ten types of blocks. Twenty by four by twenty grid. 1 = Block; 2 = UpTop; 3 = RightTop; 4 = DownTop; 5 = LeftTop; 6 = UpBottom; 7 = RightBottom; 8 = DownBottom; 9 = LeftBottom; 0 = Blank;
 		// [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]]
 		[
 		[[1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0], [1,1,1,0]],
