@@ -1,0 +1,3 @@
+To open the game file, go into the Code folder, then the HTML folder, and then open the HTMLv2.html file (As of 3/3/16).
+To start the game after opening the file, click any of the buttons on the lower half of your screen.
+You can move via either the arrow keys or W, A, S, and D. Space bar to jump(Jump not working as of 3/3/16).
