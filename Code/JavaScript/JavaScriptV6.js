@@ -11,7 +11,7 @@ var block;
 //var blockPositions = [], blockPositionsL2 = [], blockPositionsL3 = [];
 var exit = true;
 var wall;
-var canJump = true;
+var canJump = true, jumping;
 var interaction = false, interactionRead = false;
 var textBox = document.getElementById('textBox');
 var practiceLvl = document.getElementById('Practice');
@@ -82,7 +82,7 @@ var onKeyDown = function ( event ) {
 			moveRight = true;
 			break;
 		case 32: // space
-			if ( canJump === true ) velocity.y += 350;
+			if ( canJump === true ) jumping = true;
 			canJump = false;
 			break;
 		case 17: // ctrl
@@ -413,59 +413,6 @@ function onWindowResize() {
 	gEBI.width = window.innerWidth;
 	gEBI.height = window.innerHeight;
 }
-/*function intersect(sphere, box) {
-	// get box closest point to sphere center by clamping
-	var x = Math.max(box.minX, Math.min(sphere.x, box.maxX));
-	var y = Math.max(box.minY, Math.min(sphere.y, box.maxY));
-	var z = Math.max(box.minZ, Math.min(sphere.z, box.maxZ));
-
-	// this is the same as isPointInsideSphere
-	var distance = Math.sqrt((x - sphere.x) * (x - sphere.x) +
-						   (y - sphere.y) * (y - sphere.y) +
-						   (z - sphere.z) * (z - sphere.z));
-
-	console.log(distance < sphere.radius);
-	return distance < sphere.radius;
-}*/
-
-
-
-
-
-/*function checkX (pPosX, iPosX, length) {
-	if (pPosX >= iPosX - (length + 10) && pPosX <= iPosX + (length + 10)) {
-		return true;
-	} else {
-		return false;
-	}
-}
-function checkY (pPosY, iPosY, height) {
-	if (pPosY <= iPosY + (height + 5)) {
-		return true;
-	} else {
-		return false;
-	}
-}
-function checkZ (pPosZ, iPosZ, width) {
-	if (pPosZ >= iPosZ - (width + 10) && pPosZ <= iPosZ + (width + 10)) {
-		return true;
-	} else {
-		return false;
-	}
-}*
-function intersectSphBox(sphere, box) {
-  // get box closest point to sphere center by clamping
-  var x = Math.max(box.position.x - 10, Math.min(sphere.position.x - 10, box.position.x + 10));
-  var y = Math.max(box.position.y - 10, Math.min(sphere.position.y - 10, box.position.y + 10));
-  var z = Math.max(box.position.z - 10, Math.min(sphere.position.z - 10, box.position.z + 10));
-
-  // this is the same as isPointInsideSphere
-  var distance = Math.sqrt((x - sphere.position.x) * (x - sphere.position.x) +
-                           (y - sphere.position.y) * (y - sphere.position.y) +
-                           (z - sphere.position.z) * (z - sphere.position.z));
-  
-  return distance < sphere.radius;
-}*/
 function type (words) {
 	if (q <= words.length) {
 		var letter = words.substring(q, q + 1);
@@ -786,14 +733,14 @@ var PmodelYmax = (player.position.y + 10);
 		canJump = true;
 	}*/
 	
-	if (interaction === true) {
+	if (interaction) {
 		q = 0;
 		var sentenceDraw = "";
 		textBox.style.display = "block";
 		interval = setInterval(type, 300, "Hello world!");
 		interaction = false;
 	}
-	if (interactionRead === true) {
+	if (interactionRead) {
 		textBox.style.display = "none";
 	}
 	
