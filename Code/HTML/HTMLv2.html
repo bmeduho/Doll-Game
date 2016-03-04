@@ -13,14 +13,15 @@
 				margin: 0;
 				overflow: hidden;
 				font-family: arial;
+				font-size: 20px;
 			}
 			#blocker {
 				display: block;
 				position: absolute;
 				width: 100%;
 				height: 100%;
-				background-color: rgb(0,0,0);
 				z-index: 1000;
+				background-color: #000000;
 			}
 			#instructions {
 				width: 100%;
@@ -73,7 +74,19 @@
 				right: 0;
 				margin-left: auto;
 				margin-right: auto;
-				z-index: 100;
+				z-index: 101;
+			}
+			#pauseScreen {
+				display: none;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,.4);
+				text-align: center;
+				z-index: 102;
+			}
+			#levelName {
+				display: inline;
 			}
 		</style>
 	</head>
@@ -82,7 +95,9 @@
 		
 		<div id="blocker">
 			<div id="instructions">
-				W, A, S, D or ARROW KEYS to Move, SPACE to Jump, CTRL to read a little bit of text, ENTER to remove health, SHIFT to add health
+				W, A, S, D or ARROW KEYS to Move, SPACE to Jump
+				</br>
+				CTRL to read a little bit of text, ENTER to remove health, SHIFT to add health
 			</div>
 			<div id="levelSelect">
 				<table>
@@ -100,6 +115,11 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div id="pauseScreen">
+			You have paused your game on level <div id="levelName"></div>.
+			</br>
+			<button onclick="rejoinGame()">Press this to return to your game.</button> or <button onclick="breakScene()">Press this to return to the main menu.</button>
 		</div>
 		<div id="textBox"></div>
 		
