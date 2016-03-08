@@ -21,6 +21,7 @@ var death = document.getElementById('gameOver');
 var levelName = document.getElementById('levelName');
 var currentLevel = false;
 var interval;
+var wallCount = 0;
 
 /* END GLOBAL VARIABLES */
 
@@ -36,6 +37,8 @@ gEBI.width = window.innerWidth;
 gEBI.height = window.innerHeight;
 gEBI.style.position = "absolute";
 gEBI.style.zIndex = "100";
+gCtx.font = "30px Comic Sans MS";
+gCtx.fillStyle = "red";
 
 /* END CANVAS CREATION/VARIABLES */
 
@@ -216,88 +219,97 @@ function setupScene(level) {
 					case 1:
 						materials = new THREE.MeshLambertMaterial({color: 0x000000});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 2:
 						materials = new THREE.MeshLambertMaterial({color: 0xFF0000});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 3:
 						materials = new THREE.MeshLambertMaterial({color: 0x00FF00});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 4:
 						materials = new THREE.MeshLambertMaterial({color: 0x0000FF});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 5:
 						materials = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall " + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 6:
 						materials = new THREE.MeshLambertMaterial({color: 0xD9A6A6});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 7:
 						materials = new THREE.MeshLambertMaterial({color: 0xA6D9A6});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 8:
 						materials = new THREE.MeshLambertMaterial({color: 0xA6A6D9});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 9:
 						materials = new THREE.MeshLambertMaterial({color: 0xBFBFBF});
 						wall = new THREE.Mesh(cube, materials);
-						wall.name = "wall" + i + ", " + j + ", " + k;
+						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
 						scene.add(wall);
+						wallCount += 1;
 						break;
 					case 10:
 						materials = new THREE.MeshLambertMaterial({color: 0xFFFF00});
 						button = new THREE.Mesh(new THREE.CylinderGeometry( 5, 5, 1, 16, 1, false, 0, Math.PI * 2 ), materials);
-						button.name = "Button" + i + ", " + j + ", " + k;
+						button.name = "button " + i + "," + k + "," + j;
 						button.position.x = i * 20;
 						button.position.y = k * 20;
 						button.position.z = j * 20;
@@ -311,13 +323,8 @@ function setupScene(level) {
 						
 						break;
 				}
-				//blockPositions.push(wall);
 			}
-			//blockPositionsL2.push(blockPositions);
-			//blockPositions.splice(0,4);
 		}
-		//blockPositionsL3.push(blockPositionsL2);
-		//blockPositionsL2.splice(0,20);
 	}
 	
 	
@@ -418,6 +425,7 @@ function setupScene(level) {
 }
 function breakScene() {
 	scene.children.splice(1,scene.children.length);
+	wallCount = 0;
 }
 function goToMainMenu() {
 	breakScene();
@@ -467,7 +475,7 @@ function getMapSector(v) {
 }
 function checkWallCollision(v) {
 	var c = getMapSector(v);
-	return {actual: Levels.Practice.Map[c.x][c.z][c.y], below: Levels.Practice.Map[c.x][c.z][c.y - 1]};
+	return {actual: currentLevel.Map[c.x][c.z][c.y], below: currentLevel.Map[c.x][c.z][c.y - 1]};
 }
 function movementHandler(delta) {
 	var actualMoveSpeed = delta * 50.0;
@@ -653,23 +661,21 @@ function movementHandler(delta) {
 	if (moveRight) {
 		player.rotation.y -= 2.0 * delta;
 	}
-	
 	player.translateY(velocity.y * delta);
 	if (!canJump) {
 		velocity.y -= 50 * delta;
 	}
-	for (var i = 0; i < level.Map.length; i++) {
-		for (var j = 0; j < level.Map[i].length; j++) {
-			for (var k = 0; k < level.Map[i][j].length; k++) {
-				switch (level.Map[i][j][k]) {
-					case 10:
-						button.rotation.y += (Math.PI / 2) * actualMoveSpeed;
-					default:
-						
-						break;
-				}
-			}
+	for (var i = 0; i < scene.children.length; i++) {
+		switch (scene.children[i].name.substring(0,6)) {
+			case "button":
+				scene.children[i].rotation.z += (Math.PI / 2) * delta;
+			default:
+				
+				break;
 		}
+	}
+	if(checkWallCollision(player.position).actual === 10) {
+		
 	}
 }
 function animate() {
@@ -812,6 +818,7 @@ var PmodelYmax = (player.position.y + 10);
 				break;
 		}
 	};
+	gCtx.fillText("Hello World", gEBI.width * 7/8, gEBI.height * 7/8);
 
 	var relativeCameraOffset = new THREE.Vector3(0,0,40);
 	var cameraOffset = relativeCameraOffset.applyMatrix4( player.matrixWorld );
