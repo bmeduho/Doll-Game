@@ -22,6 +22,7 @@ var levelName = document.getElementById('levelName');
 var currentLevel = false;
 var interval;
 var wallCount = 0;
+var coinCount = 0;
 
 /* END GLOBAL VARIABLES */
 
@@ -39,6 +40,7 @@ gEBI.style.position = "absolute";
 gEBI.style.zIndex = "100";
 gCtx.font = "30px Comic Sans MS";
 gCtx.fillStyle = "red";
+gCtx.textAlign = "center";
 
 /* END CANVAS CREATION/VARIABLES */
 
@@ -212,18 +214,20 @@ function setupScene(level) {
 	/*var texture = [
 		new THREE.TextureLoader().load("../../Visuals/1-block-texture-practice.png")
 	];*/
+	var WallGroup = new THREE.Object3D();
+	var ButtonGroup = new THREE.Object3D();
 	for (var i = 0; i < level.Map.length; i++) {
 		for (var j = 0; j < level.Map[i].length; j++) {
 			for (var k = 0; k < level.Map[i][j].length; k++) {
 				switch (level.Map[i][j][k]) {
-					case 1:
+					case "Block":
 						materials = new THREE.MeshLambertMaterial({color: 0x000000});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 2:
@@ -233,7 +237,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 3:
@@ -243,7 +247,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 4:
@@ -253,7 +257,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 5:
@@ -263,7 +267,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 6:
@@ -273,7 +277,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 7:
@@ -283,7 +287,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 8:
@@ -293,7 +297,7 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
 					case 9:
@@ -303,10 +307,10 @@ function setupScene(level) {
 						wall.position.x = i * 20;
 						wall.position.y = k * 20;
 						wall.position.z = j * 20;
-						scene.add(wall);
+						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 10:
+					case "Button":
 						materials = new THREE.MeshLambertMaterial({color: 0xFFFF00});
 						button = new THREE.Mesh(new THREE.CylinderGeometry( 5, 5, 1, 16, 1, false, 0, Math.PI * 2 ), materials);
 						button.name = "button " + i + "," + k + "," + j;
@@ -314,9 +318,9 @@ function setupScene(level) {
 						button.position.y = k * 20;
 						button.position.z = j * 20;
 						button.rotation.x = Math.PI / 2;
-						scene.add(button);
+						ButtonGroup.add(button);
 						break;
-					case 0:
+					case "Blank":
 						
 						break;
 					default:
@@ -326,7 +330,8 @@ function setupScene(level) {
 			}
 		}
 	}
-	
+	scene.add(WallGroup);
+	scene.add(ButtonGroup);
 	
 /*	// floor
 	geometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
@@ -424,7 +429,7 @@ function setupScene(level) {
 	animate();
 }
 function breakScene() {
-	scene.children.splice(1,scene.children.length);
+	scene.children.splice(0,scene.children.length);
 	wallCount = 0;
 }
 function goToMainMenu() {
@@ -486,11 +491,11 @@ function movementHandler(delta) {
 			player.translateY( - actualMoveSpeed )
 		}
 	}*/
-	if (checkWallCollision(player.position).below === 0) {
+	if (checkWallCollision(player.position).below === "Blank") {
 		player.translateY( - actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 1) {
+	} else if (checkWallCollision(player.position).below === "Block" && checkWallCollision(player.position).actual === "Blank" && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 1) {
 		player.translateY( actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === 1 && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 0) {
+	} else if (checkWallCollision(player.position).below === "Block" && checkWallCollision(player.position).actual === "Blank" && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 0) {
 		velocity.y = 0;
 		if (player.position.y / 20 - Math.floor(player.position.y / 20) > .10) {
 			player.translateY( - actualMoveSpeed );
@@ -501,7 +506,7 @@ function movementHandler(delta) {
 	}
 	if (moveForward) {
 		player.translateZ( - actualMoveSpeed);
-		if (checkWallCollision(player.position).actual === 1) {
+		if (checkWallCollision(player.position).actual === "Block") {
 			player.translateZ( actualMoveSpeed );
 		} else if (checkWallCollision(player.position).actual === 2) {
 			player.translateY( actualMoveSpeed );
@@ -579,7 +584,7 @@ function movementHandler(delta) {
 	}
 	if (moveBackward) {
 		player.translateZ( actualMoveSpeed);
-		if (checkWallCollision(player.position).actual === 1) {
+		if (checkWallCollision(player.position).actual === "Block") {
 			player.translateZ( - actualMoveSpeed );
 		} else if (checkWallCollision(player.position).actual === 2) {
 			player.translateY( actualMoveSpeed );
@@ -665,18 +670,16 @@ function movementHandler(delta) {
 	if (!canJump) {
 		velocity.y -= 50 * delta;
 	}
-	for (var i = 0; i < scene.children.length; i++) {
-		switch (scene.children[i].name.substring(0,6)) {
-			case "button":
-				scene.children[i].rotation.z += (Math.PI / 2) * delta;
-			default:
-				
-				break;
+	for (var i = 0; i < scene.children[4].children.length; i++) {
+		scene.children[4].children[i].rotation.z += (Math.PI / 2) * delta;
+		if(checkWallCollision(player.position).actual === "Button") {
+			if ((scene.children[4].children[i].position.x < player.position.x + 10 && scene.children[4].children[i].position.x > player.position.x - 10) && (scene.children[4].children[i].position.y < player.position.y + 10 && scene.children[4].children[i].position.y > player.position.y - 10) && (scene.children[4].children[i].position.z < player.position.z + 10 && scene.children[4].children[i].position.z > player.position.z - 10) && scene.children[4].children[i].visible === true) {
+				scene.children[4].children[i].visible = false;
+				coinCount += 1;
+			}
 		}
 	}
-	if(checkWallCollision(player.position).actual === 10) {
-		
-	}
+	
 }
 function animate() {
 	if (!exit) {
@@ -801,7 +804,7 @@ var PmodelYmax = (player.position.y + 10);
 		interaction += 1;
 	}
 	
-	gCtx.clearRect(0, 0, gEBI.style.width, gEBI.style.height);
+	gCtx.clearRect(0, 0, gEBI.width, gEBI.height);
 	if (healthReady === 4) {
 		switch(health) {
 			case 0:
@@ -818,7 +821,7 @@ var PmodelYmax = (player.position.y + 10);
 				break;
 		}
 	};
-	gCtx.fillText("Hello World", gEBI.width * 7/8, gEBI.height * 7/8);
+	gCtx.fillText(coinCount + " xCoins", gEBI.width * 7/8, gEBI.height * 7/8);
 
 	var relativeCameraOffset = new THREE.Vector3(0,0,40);
 	var cameraOffset = relativeCameraOffset.applyMatrix4( player.matrixWorld );
