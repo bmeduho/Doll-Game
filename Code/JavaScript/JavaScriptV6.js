@@ -1,7 +1,8 @@
 /* START GLOBAL VARIABLES */
 
 var q = 0, sentenceDraw = "";
-var camera, scene, renderer;
+var x = -200, cenamatic = false;
+var camera, cameraCenama, scene, renderer;
 var geometry, material, mesh;
 var health;
 var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
@@ -127,7 +128,9 @@ var onKeyUp = function ( event ) {
 			break;
 		case 27: // Esc
 			exit = true;
-			return exit;
+			break;
+		case 81: // q
+			cenamatic = true;
 			break;
 	}
 };
@@ -142,6 +145,7 @@ var onKeyUp = function ( event ) {
 
 function init() {
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 );
+	cameraCenama = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 );
 	scene = new THREE.Scene();
 	scene.fog = new THREE.Fog( 0xffffff, 0, 600 );
 	scene.add( camera );
@@ -167,10 +171,34 @@ function init() {
 
 /* END INITIALIZATION FUNCTION */
 
-
+function Cenimatic (prevTime) {
+	
+	var time = performance.now();
+	var delta = ( time - prevTime ) / 1000;
+	
+	var count = 0;
+	if (count < 180) {
+		cameraCenama.position.x = x;
+		cameraCenama.position.y = 20;
+		cameraCenama.position.z = 200 + Math.sqrt(160000 - ((x-200)*(x-200)));
+	} else if (count => 180 && count < 360) {
+		cameraCenama.position.x = x;
+		cameraCenama.position.y = 20;
+		cameraCenama.position.z = 200 - Math.sqrt(160000 - ((x-200)*(x-200)));
+	} else {
+		clearInterval(interval);
+		cenamatic = false;
+		animate();
+	}
+	cameraCenama.rotation.y = -(delta * count);
+	x += 1;
+	count += 1;
+	renderer.render( scene, cameraCenama );
+	prevTime = time;
+}
 
 function setupScene(level) {
-	breakScene();
+	//breakScene();
 	blocker.style.display = "none";
 	pauseScreen.style.display = "none";
 	gameOver.style.display = "none";
@@ -219,8 +247,8 @@ function setupScene(level) {
 	for (var i = 0; i < level.Map.length; i++) {
 		for (var j = 0; j < level.Map[i].length; j++) {
 			for (var k = 0; k < level.Map[i][j].length; k++) {
-				switch (level.Map[i][j][k]) {
-					case "Block":
+				switch (level.Map[i][j][k].name) {
+					case "wall":
 						materials = new THREE.MeshLambertMaterial({color: 0x000000});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -230,7 +258,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 2:
+					case "up top ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xFF0000});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -240,7 +268,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 3:
+					case "right top ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0x00FF00});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -250,7 +278,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 4:
+					case "down top ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0x0000FF});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -260,7 +288,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 5:
+					case "left top ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -270,7 +298,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 6:
+					case "up bottom ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xD9A6A6});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -280,7 +308,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 7:
+					case "right bottom ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xA6D9A6});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -290,7 +318,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 8:
+					case "down bottom ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xA6A6D9});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -300,7 +328,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case 9:
+					case "left bottom ramp":
 						materials = new THREE.MeshLambertMaterial({color: 0xBFBFBF});
 						wall = new THREE.Mesh(cube, materials);
 						wall.name = "wall " + i + "," + k + "," + j;
@@ -310,7 +338,7 @@ function setupScene(level) {
 						WallGroup.add(wall);
 						wallCount += 1;
 						break;
-					case "Button":
+					case "yellow coin":
 						materials = new THREE.MeshLambertMaterial({color: 0xFFFF00});
 						button = new THREE.Mesh(new THREE.CylinderGeometry( 5, 5, 1, 16, 1, false, 0, Math.PI * 2 ), materials);
 						button.name = "button " + i + "," + k + "," + j;
@@ -429,7 +457,7 @@ function setupScene(level) {
 	animate();
 }
 function breakScene() {
-	scene.children.splice(0,scene.children.length);
+	scene.children.splice(1,scene.children.length);
 	wallCount = 0;
 }
 function goToMainMenu() {
@@ -491,11 +519,11 @@ function movementHandler(delta) {
 			player.translateY( - actualMoveSpeed )
 		}
 	}*/
-	if (checkWallCollision(player.position).below === "Blank") {
+	if (checkWallCollision(player.position).below === 0) {
 		player.translateY( - actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === "Block" && checkWallCollision(player.position).actual === "Blank" && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 1) {
+	} else if (checkWallCollision(player.position).below === Platform && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 1) {
 		player.translateY( actualMoveSpeed );
-	} else if (checkWallCollision(player.position).below === "Block" && checkWallCollision(player.position).actual === "Blank" && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 0) {
+	} else if (checkWallCollision(player.position).below === Platform && checkWallCollision(player.position).actual === 0 && Math.round(player.position.y / 20 - Math.floor(player.position.y / 20)) === 0) {
 		velocity.y = 0;
 		if (player.position.y / 20 - Math.floor(player.position.y / 20) > .10) {
 			player.translateY( - actualMoveSpeed );
@@ -506,7 +534,7 @@ function movementHandler(delta) {
 	}
 	if (moveForward) {
 		player.translateZ( - actualMoveSpeed);
-		if (checkWallCollision(player.position).actual === "Block") {
+		if (checkWallCollision(player.position).actual === Platform) {
 			player.translateZ( actualMoveSpeed );
 		} else if (checkWallCollision(player.position).actual === 2) {
 			player.translateY( actualMoveSpeed );
@@ -695,6 +723,11 @@ function animate() {
 	}
 	var time = performance.now();
 	var delta = ( time - prevTime ) / 1000;
+	if (cenamatic) {
+		clearInterval(interval);
+		interval = setInterval(Cenimatic, 100, time);
+		return;
+	}
 	movementHandler(delta);
 	
 /*	for (var i = 0; i < objects.length; i++) {
