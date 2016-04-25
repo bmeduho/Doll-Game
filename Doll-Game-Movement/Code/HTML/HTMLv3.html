@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SkillsUSA Game Trial</title>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+			}
+			body {
+				background-color: #ffffff;
+				margin: 0;
+				overflow: hidden;
+				font-family: arial;
+				font-size: 20px;
+			}
+			#blocker {
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				z-index: 1000;
+				background-color: #000000;
+			}
+			#instructions {
+				width: 100%;
+				height: 50%;
+				display: -webkit-box;
+				display: -moz-box;
+				display: box;
+				-webkit-box-orient: horizontal;
+				-moz-box-orient: horizontal;
+				box-orient: horizontal;
+				-webkit-box-pack: center;
+				-moz-box-pack: center;
+				box-pack: center;
+				-webkit-box-align: center;
+				-moz-box-align: center;
+				box-align: center;
+				color: #ffffff;
+				text-align: center;
+			}
+			#levelSelect {
+				width: 100%;
+				height: 50%;
+				display: -webkit-box;
+				display: -moz-box;
+				display: box;
+				-webkit-box-orient: horizontal;
+				-moz-box-orient: horizontal;
+				box-orient: horizontal;
+				-webkit-box-pack: center;
+				-moz-box-pack: center;
+				box-pack: center;
+				-webkit-box-align: center;
+				-moz-box-align: center;
+				box-align: center;
+				color: #ffffff;
+				text-align: center;
+			}
+			#textBox {
+				background-color: white;
+				width: 500px;
+				padding: 10px;
+				border-style: outset;
+				border-color: grey;
+				border-width: 5px;
+				height: 100px;
+				display: none;
+				position: absolute;
+				top: 50%;
+				left: 0;
+				right: 0;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 101;
+			}
+			#pauseScreen {
+				display: none;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				padding-top: 20%;
+				margin-left: auto;
+				margin-right: auto;
+				background-color: rgba(0,0,0,.7);
+				color: white;
+				text-align: center;
+				z-index: 102;
+			}
+			#gameOver {
+				display: none;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				padding-top: 20%;
+				margin-left: auto;
+				margin-right: auto;
+				background-color: rgba(0,0,0,.7);
+				color: white;
+				text-align: center;
+				z-index: 103;
+			}
+			#levelName {
+				display: inline;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="../Libraries/three.min.js"></script>
+		
+		<div id="blocker">
+			<div id="instructions">
+				W,A,S,D or ARROW KEYS to Move, SPACE to Jump
+				</br>
+				CTRL to read a little bit of text, ENTER to remove health, SHIFT to add health
+			</div>
+			<div id="levelSelect">
+				<table>
+					<tbody>
+						<tr>
+							<td><button id="PracticeLvl" onclick="setupScene(Levels.Practice)">Practice</button></td>
+							<td>Doesn't Work</td>
+							<td>Doesn't Work</td>
+						</tr>
+						<tr>
+							<td>Doesn't Work</td>
+							<td>Doesn't Work</td>
+							<td>Doesn't Work</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="pauseScreen">
+			You have paused your game on level <div id="levelName"></div>.
+			</br>
+			<button onclick="rejoinGame()">Press this to return to your game.</button> or <button onclick="goToMainMenu()">Press this to return to the main menu.</button>
+		</div>
+		<div id="gameOver">
+			You have died.
+			</br>
+			<button onclick="setupScene(currentLevel)">Press this to restart your game on the same level.</button> or <button onclick="goToMainMenu()">Press this to return to the main menu.</button>
+		</div>
+		<div id="textBox"></div>
+		
+		<script src="../JSFiles/Global_Variables.js"></script>
+		<script src="../JSFiles/BlockTypes.js"></script>
+		<script src="../JSFiles/Level_1.js"></script>
+		<script src="../JSFiles/Everything_Canvas.js"></script>
+		<script src="../JSFiles/KeyUp_KeyDown.js"></script>
+		<script src="../JSFiles/Initialization.js"></script>
+		<script src="../JSFiles/Setup_Scene.js"></script>
+		<script src="../JSFiles/Movement_HandlerV2.js"></script>
+		<script src="../JSFiles/Other.js"></script>
+		<script src="../JSFiles/Animate.js"></script>
+		<script src="../JSFiles/Start.js"></script>
+	</body>
+</html>

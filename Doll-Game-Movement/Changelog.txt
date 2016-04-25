@@ -1,0 +1,2 @@
+3/3/16
+* Got the text box for any text used in-game to work in it's first form. (Box appears, text shows up one letter at a time.)
